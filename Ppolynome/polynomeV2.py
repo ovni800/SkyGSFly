@@ -46,7 +46,6 @@ class poly():
         v = str(v).strip()
         return v=='0' or (v if v.find('..') > -1 else v.lstrip('-+').rstrip('0').rstrip('.')).isdigit()
 
-
     def liste(self):
         return self.l
     
@@ -61,8 +60,9 @@ class poly():
                 polynome += i[0] + i[1]
             else:
                 polynome += i[0] + i[1] + "^" + i[2]
-        self.p = polynome
-        return self.p
+        self.s = polynome
+        return self.s
+    
 p = poly("24x^2 + 12x - 12")
 print(p.liste())
 print(p.ListeToStr())
