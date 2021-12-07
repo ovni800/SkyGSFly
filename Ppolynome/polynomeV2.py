@@ -26,7 +26,10 @@ class poly():
 
         for i in preL:
             element = []
-            element.append(i[0])
+            if(i[0][0] == "+"):
+                element.append(i[0][1:])
+            else:
+                element.append(i[0])
             if(len(i) == 2):
                 if(i[1] != ""):
                     element.append("x")
@@ -47,5 +50,19 @@ class poly():
     def liste(self):
         return self.l
     
-p = poly("24x^2 - 12")
+    def ListeToStr(self):
+        polynome = ""
+        for i in self.l:
+            if(i != self.l[0] and i[0][0] != "-"):
+                i[0] = "+" + i[0]
+            if(i[-1] == "0"):
+                polynome += i[0]
+            elif(i[-1] == "1"):
+                polynome += i[0] + i[1]
+            else:
+                polynome += i[0] + i[1] + "^" + i[2]
+        self.p = polynome
+        return self.p
+p = poly("24x^2 + 12x - 12")
 print(p.liste())
+print(p.ListeToStr())
