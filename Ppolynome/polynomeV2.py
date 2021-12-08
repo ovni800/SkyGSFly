@@ -41,6 +41,7 @@ class poly():
                 element.append("x")
                 element.append("0")
             self.l.append(element)
+            self.ListeToStr()
 
     def isInt_str(self, v):
         v = str(v).strip()
@@ -52,7 +53,7 @@ class poly():
     def ListeToStr(self):
         polynome = ""
         for i in self.l:
-            if(i != self.l[0] and i[0][0] != "-"):
+            if(i != self.l[0] and i[0][0] != "-" and i[0][0] != "+"):
                 i[0] = "+" + i[0]
             if(i[-1] == "0"):
                 polynome += i[0]
@@ -60,9 +61,9 @@ class poly():
                 polynome += i[0] + i[1]
             else:
                 polynome += i[0] + i[1] + "^" + i[2]
+            print(polynome)
         self.s = polynome
         return self.s
     
 p = poly("24x^2 + 12x - 12")
 print(p.liste())
-print(p.ListeToStr())
