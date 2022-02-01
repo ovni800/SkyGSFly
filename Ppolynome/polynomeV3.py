@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np #import des bibliothèques
 import matplotlib.pyplot as plt
 class poly:
     def __init__(self, polynome):#initialisation avec toutes les variables utiles
@@ -22,44 +22,44 @@ class poly:
         return self.affiche(-30,30)
     
     def Traitement(self):#traitement du polynome brut en liste et en chaine de charatere
-        polynome = ""#créer un string
+        polynome = ""#créer un string vide
         for i in self.p:#enlève les espaces
             if i != " ":
                 polynome = polynome + i
         self.p = polynome #remet dans une liste
 
-        preL = [] #creer une novelle liste
+        preL = [] #creer une novelle liste vide
         element = "" #initilise un element du polynome
         for i in range(len(self.p)):#coupe les différents elements en liste d'elements
-            if(i != 0 and (self.p[i] == "+" or self.p[i] == "-") and self.p[i - 1] != "^"):
-                preL.append(element)
-                element = self.p[i]
+            if(i != 0 and (self.p[i] == "+" or self.p[i] == "-") and self.p[i - 1] != "^"): #si est i de self.p est un plus ou un moins 
+                preL.append(element) # alors ajoutez element à preL
+                element = self.p[i] # elément deviens l'indice i de self.p
             else:
-                element = element + self.p[i]
+                element = element + self.p[i] # ajouter la valeur de self.p[i] à element (c'est donc un chiffre ou un "^"
         preL.append(element)#ajouter l'element à la liste preL
 
         preL = [i.split("x") for i in preL]#redimentionne les x
         
-        for i in preL:#traite les differents elements dans une charte définie
-            elements = []
-            if(len(i) != 0 and len(i[0]) != 0):
-                if(i[0][0] == "+"):
-                    elements.append(i[0][1:])
-                elif(i[0][0] == "-"):
-                    elements.append(i[0])
+        for i in preL:#pour chaque élément de preL nommé i
+            elements = [] #crée une liste vide 
+            if(len(i) != 0 and len(i[0]) != 0):#si i est différent de 0 et non vide
+                if(i[0][0] == "+"): # et que son premier élément est un plus 
+                    elements.append(i[0][1:]) # ajouter tout le premier élement de i a elements sans le premier symbole (un +)
+                elif(i[0][0] == "-"): #si son premier élément est un moins
+                    elements.append(i[0])# ajouter le premier element de i a element 
                 else:
-                    elements.append("+" + i[0])
-                if(len(i) == 2):
-                    if(i[1] != ""):
-                        elements.append("x")
-                        elements.append(i[1][1:])
-                    else:
-                        elements.append("x")
-                        elements.append("1")
-                else:
-                    elements.append("x")
-                    elements.append("0")
-                self.l.append(elements)
+                    elements.append("+" + i[0])# sinon, ajouter le premier element  de i a élément avec un plus devant
+                if(len(i) == 2):#si i contient uniquement deux éléments
+                    if(i[1] != ""):# et que le deuxieme est non vide
+                        elements.append("x") # ajouter x a element
+                        elements.append(i[1][1:])#ajouter la fin de i
+                    else:#sinon
+                        elements.append("x")# ajouter x a élément 
+                        elements.append("1")# ajouter 1 a élément
+                else:#si i est plus petit que 2
+                    elements.append("x")#ajouter un x a élément 
+                    elements.append("0")#ajouter un 0 a élément 
+                self.l.append(elements)# ajouter l'élément fianlement créé à self.l
         self.ListeToStr()
 
     def isInt_str(self, v):#test si un str peut etre un integer
@@ -84,31 +84,31 @@ class poly:
         return self.s
     
     def derive(self):#trouve la dérivé du polynome 
-        derive = []
-        for partie in self.l:
-            if int(partie[2]) >= 1:
-                if int(partie[0])>0:
-                    bloc = ["+" + str(int(partie[0]) * int(partie[2]))]
+        derive = []#crée une liste vide 
+        for partie in self.l:# pour chaque éleemnt de self.l
+            if int(partie[2]) >= 1:#si l'élément possède un coef 
+                if int(partie[0])>0:#si l'élément possède un multiplicateur 
+                    bloc = ["+" + str(int(partie[0]) * int(partie[2]))]#ajouter en str la multiplication du coef et de la valeur 
                 else:
-                    bloc = [str(int(partie[0]) * int(partie[2]))]
-                bloc.append(partie[1])
-                bloc.append(str(int(partie[2])-1))
-                derive.append(bloc)
-        n = poly(self.toText(derive))
-        return n
+                    bloc = [str(int(partie[0]) * int(partie[2]))]#mettre dans bloc en str la multiplication du coef et de la valeur 
+                bloc.append(partie[1])#ajouter l'élément (le x par ex)
+                bloc.append(str(int(partie[2])-1))# réduire de 1 le coef total
+                derive.append(bloc)# ajouter le bloc créé a la dérivée 
+        n = poly(self.toText(derive))#transformer la liste crée en un polynome 
+        return n #renvoyer le polynome 
     
     def seconde(self):#trouve la seconde du polynome initiale
         return self.derive().derive()
     
     def toText(self,listpoly):#polynome en texte
-        phrase = ""
-        for mot in listpoly:
-            if mot[2] == "0":
-                phrase = phrase +" "+ mot[0]
-            elif mot[2] == "1":
-                phrase = phrase +" "+ mot[0] + mot[1]
+        phrase = ""#création d'une "phrase" pour stocker la transformation
+        for mot in listpoly:#pour chaque élement de listpoly
+            if mot[2] == "0":#si l'élément n'a aucun coef
+                phrase = phrase +" "+ mot[0]# ajouter la valeur brut a la "phrase"
+            elif mot[2] == "1":# si l'élément possède un coef de 1
+                phrase = phrase +" "+ mot[0] + mot[1]# ajouter l'élement a coté du symbole actuel (souvent x)
             else:
-                phrase = phrase +" "+ mot[0] + mot[1] + "^" + mot[2]
+                phrase = phrase +" "+ mot[0] + mot[1] + "^" + mot[2]# si le coef est superieur ou égal a 2, ajouter le signe, a coté du multiplivateur, et du symbole avec un symbole pour le coef
         return phrase
     
     def racines(self):#trouve les racines du polynome simplifier
